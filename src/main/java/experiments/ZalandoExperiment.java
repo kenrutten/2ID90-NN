@@ -67,8 +67,8 @@ public class ZalandoExperiment extends GUIExperiment {
 	}
     
     Model createModel( int inputs, int outputs) {
-        Model model = new Model(new InputLayer("In", new TensorShape(inputs), true));
-        model.addLayer(new Flatten("Flatten", new TensorShape(inputs)));
+        Model model = new Model(new InputLayer("In", new TensorShape(28, 28, 1), true));
+        model.addLayer(new Flatten("Flatten", new TensorShape(28, 28, 1)));
         model.addLayer(new OutputSoftmax("Out",
                 new TensorShape(m), n, new CrossEntropy()));
         
