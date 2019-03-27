@@ -51,9 +51,9 @@ public class ZalandoExperiment extends GUIExperiment {
         
         //Use meansubstraction
         MeanSubtraction ms = new MeanSubtraction();
-        ms.fit(reader.getTrainingData());
-        ms.transform(reader.getTrainingData());
-        ms.transform(reader.getValidationData());
+        ms.fit(reader.getTrainingData()); //retrieve mean
+        ms.transform(reader.getTrainingData()); //apply transformation
+        ms.transform(reader.getValidationData()); //apply transformation
 
         // print a record
         reader.getValidationData(1).forEach(System.out::println);

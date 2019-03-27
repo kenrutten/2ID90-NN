@@ -19,10 +19,10 @@ import nl.tue.s2id90.dl.input.InputReader;
 import static org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction.MSE;
 
 public class FunctionExperiment extends GUIExperiment {
-    int batchSize = 32;
-    int epochs = 5; //# of epochs that a training takes
-    double learningRate = 0.02;
-    int layers = 3;
+    int batchSize = 128;
+    int epochs = 20; //# of epochs that a training takes
+    double learningRate = 0.005;
+    int layers = 5;
 	// (hyper)parameteres
 	// ...
 
