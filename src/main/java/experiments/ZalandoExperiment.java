@@ -1,5 +1,7 @@
 package experiments;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tue.s2id90.dl.NN.Model;
 import nl.tue.s2id90.dl.NN.activation.RELU;
 import nl.tue.s2id90.dl.NN.initializer.Gaussian;
@@ -12,7 +14,9 @@ import nl.tue.s2id90.dl.NN.loss.CrossEntropy;
 import nl.tue.s2id90.dl.NN.loss.MSE;
 import nl.tue.s2id90.dl.NN.optimizer.Optimizer;
 import nl.tue.s2id90.dl.NN.optimizer.SGD;
+import nl.tue.s2id90.dl.NN.tensor.TensorPair;
 import nl.tue.s2id90.dl.NN.tensor.TensorShape;
+import nl.tue.s2id90.dl.NN.transform.MeanSubtraction;
 import nl.tue.s2id90.dl.NN.validate.Classification;
 import nl.tue.s2id90.dl.experiment.Experiment;
 import nl.tue.s2id90.dl.experiment.GUIExperiment;
@@ -25,7 +29,7 @@ import nl.tue.s2id90.dl.javafx.ShowCase;
 public class ZalandoExperiment extends GUIExperiment {
     int batchSize = 32;
     int epochs = 5; //# of epochs that a training takes
-    double learningRate = 0.01;
+    double learningRate = 0.02;
     int m = 784;
     int n = 10;
     String[] labels = {
@@ -42,16 +46,19 @@ public class ZalandoExperiment extends GUIExperiment {
         InputReader reader = MNISTReader.fashion(batchSize);
         System.out.println("Reader info:\n" + reader.toString());
         
-        // print a record
-        reader.getValidationData(1).forEach(System.out::println);
-        
         FXGUI.getSingleton().addTab("show case", showCase.getNode());
         showCase.setItems(reader.getValidationData(100));
         
-        int inputs = reader.getInputShape().getNeuronCount();
-        int outputs = reader.getOutputShape().getNeuronCount();
+        //Use meansubstraction
+        MeanSubtraction ms = new MeanSubtraction();
+        ms.fit(reader.getTrainingData());
+        ms.transform(reader.getTrainingData());
+        ms.transform(reader.getValidationData());
+
+        // print a record
+        reader.getValidationData(1).forEach(System.out::println);
         
-        Model model = createModel(inputs, outputs);
+        Model model = createModel();
         System.out.println(model);
         
         Optimizer sgd = SGD.builder()
@@ -66,7 +73,7 @@ public class ZalandoExperiment extends GUIExperiment {
 		new ZalandoExperiment().go();
 	}
     
-    Model createModel( int inputs, int outputs) {
+    Model createModel() {
         Model model = new Model(new InputLayer("In", new TensorShape(28, 28, 1), true));
         model.addLayer(new Flatten("Flatten", new TensorShape(28, 28, 1)));
         model.addLayer(new OutputSoftmax("Out",

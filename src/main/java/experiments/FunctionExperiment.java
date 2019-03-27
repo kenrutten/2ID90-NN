@@ -11,6 +11,7 @@ import nl.tue.s2id90.dl.NN.loss.MSE;
 import nl.tue.s2id90.dl.NN.optimizer.Optimizer;
 import nl.tue.s2id90.dl.NN.optimizer.SGD;
 import nl.tue.s2id90.dl.NN.tensor.TensorShape;
+import nl.tue.s2id90.dl.NN.validate.Classification;
 import nl.tue.s2id90.dl.NN.validate.Regression;
 import nl.tue.s2id90.dl.experiment.GUIExperiment;
 import nl.tue.s2id90.dl.input.GenerateFunctionData;
@@ -18,9 +19,9 @@ import nl.tue.s2id90.dl.input.InputReader;
 import static org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction.MSE;
 
 public class FunctionExperiment extends GUIExperiment {
-    int batchSize = 100;
-    int epochs = 10; //# of epochs that a training takes
-    double learningRate = 0.01;
+    int batchSize = 32;
+    int epochs = 5; //# of epochs that a training takes
+    double learningRate = 0.02;
     int layers = 3;
 	// (hyper)parameteres
 	// ...
