@@ -27,7 +27,7 @@ import nl.tue.s2id90.dl.javafx.FXGUI;
 import nl.tue.s2id90.dl.javafx.ShowCase;
 
 
-public class ZalandoExperiment extends GUIExperiment {
+public class SCTExperiment extends GUIExperiment {
     int batchSize = 32;
     int epochs = 5; //# of epochs that a training takes
     double learningRate = 0.02;
@@ -44,17 +44,17 @@ public class ZalandoExperiment extends GUIExperiment {
 	public void go() throws IOException {
 		// you are going to add code here
         // read input and print some information on the data
-        InputReader reader = MNISTReader.fashion(batchSize);
+        InputReader reader = MNISTReader.primitives(batchSize);
         System.out.println("Reader info:\n" + reader.toString());
         
         FXGUI.getSingleton().addTab("show case", showCase.getNode());
         showCase.setItems(reader.getValidationData(100));
         
         //Use meansubstraction
-        /*MeanSubtraction ms = new MeanSubtraction();
+        MeanSubtraction ms = new MeanSubtraction();
         ms.fit(reader.getTrainingData()); //retrieve mean
         ms.transform(reader.getTrainingData()); //apply transformation
-        ms.transform(reader.getValidationData()); //apply transformation*/
+        ms.transform(reader.getValidationData()); //apply transformation
 
         // print a record
         reader.getValidationData(1).forEach(System.out::println);
@@ -66,7 +66,7 @@ public class ZalandoExperiment extends GUIExperiment {
                 .model(model)
                 .learningRate(learningRate)
                 .validator(new Classification())
-                //.updateFunction(MyGradientDescentVariant::new)
+                .updateFunction(MyGradientDescentVariant::new)
                 .build();
         trainModel(sgd, reader, epochs, 0);
 	}

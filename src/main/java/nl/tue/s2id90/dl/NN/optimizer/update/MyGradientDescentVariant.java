@@ -17,11 +17,22 @@ public class MyGradientDescentVariant implements UpdateFunction {
     INDArray update;
     @Override
     public void update(INDArray value, boolean isBias, double learningRate, int batchSize, INDArray gradient) {
+        double avgGradient = 0d;
         if (update == null) {
             update = gradient.dup('f').assign(0);
         }
         double factor = -(learningRate/batchSize);
         Nd4j.getBlasWrapper().level1().axpy( value.length(), factor, gradient, value );
                                             // value <-- value + factor * gradient
+        /*for (int i = 0; i < gradient.length(); i++) {
+            avgGradient += gradient.getDouble(i);
+        }
+        avgGradient /= gradient.length();
+        
+        
+        for (int i = 0; i < value.length(); i++) {
+            value.addi(avgGradient);
+        }*/
+        
     }
 }
