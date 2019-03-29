@@ -22,7 +22,7 @@ public class FunctionExperiment extends GUIExperiment {
     int batchSize = 128;
     int epochs = 20; //# of epochs that a training takes
     double learningRate = 0.005;
-    int layers = 5;
+    int layers = 100;
 	// (hyper)parameteres
 	// ...
 

@@ -5,10 +5,12 @@ import java.util.List;
 import nl.tue.s2id90.dl.NN.Model;
 import nl.tue.s2id90.dl.NN.activation.RELU;
 import nl.tue.s2id90.dl.NN.initializer.Gaussian;
+import nl.tue.s2id90.dl.NN.layer.Convolution2D;
 import nl.tue.s2id90.dl.NN.layer.Flatten;
 import nl.tue.s2id90.dl.NN.layer.FullyConnected;
 import nl.tue.s2id90.dl.NN.layer.InputLayer;
 import nl.tue.s2id90.dl.NN.layer.OutputSoftmax;
+import nl.tue.s2id90.dl.NN.layer.PoolMax2D;
 import nl.tue.s2id90.dl.NN.layer.SimpleOutput;
 import nl.tue.s2id90.dl.NN.loss.CrossEntropy;
 import nl.tue.s2id90.dl.NN.loss.MSE;
@@ -30,8 +32,8 @@ import nl.tue.s2id90.dl.javafx.ShowCase;
 public class SCTExperiment extends GUIExperiment {
     int batchSize = 32;
     int epochs = 5; //# of epochs that a training takes
+    int filters = 16;
     double learningRate = 0.01;
-    int m = 784;
     int n = 3;
     String[] labels = {
             "Square", "Circle", "Triangle"
@@ -76,12 +78,17 @@ public class SCTExperiment extends GUIExperiment {
     
     Model createModel() {
         Model model = new Model(new InputLayer("In", new TensorShape(28, 28, 1), true));
-        model.addLayer(new Flatten("Flatten", new TensorShape(28, 28, 1)));
-        model.addLayer(new OutputSoftmax("Out",
-                new TensorShape(m), n, new CrossEntropy()));
-        
+        model.addLayer(new Convolution2D("Convolution1", new TensorShape(28, 28, 1), 5, filters, new RELU()));
+        model.addLayer(new PoolMax2D("Pool1", new TensorShape(28, 28, filters), 2));
+        model.addLayer(new Convolution2D("Convolution2", new TensorShape(14, 14, filters), 3, filters, new RELU()));
+        model.addLayer(new PoolMax2D("Pool2", new TensorShape(14, 14, filters), 2));
+        model.addLayer(new Flatten("Flatten", new TensorShape(7, 7, filters)));
+        model.addLayer(new FullyConnected("Fully connected", new TensorShape(filters*49), filters*49, new RELU()));
+        model.addLayer(new OutputSoftmax("Out",new TensorShape(filters*49), n, new CrossEntropy()));
         model.initialize(new Gaussian());
+        
         return model;
+        
     }
     
     public void onEpochFinished(Optimizer sgd, int epoch){
