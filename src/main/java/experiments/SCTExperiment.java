@@ -30,7 +30,7 @@ import nl.tue.s2id90.dl.javafx.ShowCase;
 public class SCTExperiment extends GUIExperiment {
     int batchSize = 32;
     int epochs = 5; //# of epochs that a training takes
-    double learningRate = 0.02;
+    double learningRate = 0.01;
     int m = 784;
     int n = 3;
     String[] labels = {

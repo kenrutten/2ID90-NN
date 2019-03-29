@@ -66,7 +66,7 @@ public class ZalandoExperiment extends GUIExperiment {
                 .model(model)
                 .learningRate(learningRate)
                 .validator(new Classification())
-                //.updateFunction(MyGradientDescentVariant::new)
+                .updateFunction(MyGradientDescentVariant::new)
                 .build();
         trainModel(sgd, reader, epochs, 0);
 	}
