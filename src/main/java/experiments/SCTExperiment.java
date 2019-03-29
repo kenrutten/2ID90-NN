@@ -32,10 +32,9 @@ public class SCTExperiment extends GUIExperiment {
     int epochs = 5; //# of epochs that a training takes
     double learningRate = 0.02;
     int m = 784;
-    int n = 10;
+    int n = 3;
     String[] labels = {
-            "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
-            "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"
+            "Square", "Circle", "Triangle"
         };
     ShowCase showCase = new ShowCase(i -> labels[i]);
 	// (hyper)parameteres
@@ -72,7 +71,7 @@ public class SCTExperiment extends GUIExperiment {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new ZalandoExperiment().go();
+		new SCTExperiment().go();
 	}
     
     Model createModel() {
